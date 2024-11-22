@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Text Boxes</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        background: url(../login_background.jpg) no-repeat;
+        background-size: cover;
+      }
+
+      h1 {
+        text-align: center;
+        padding: 20px;
+        color: #333;
+      }
+
+      .buttonContainer {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
+      .buttonContainer input {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        width: 200px;
+        margin-right: 10px;
+      }
+
+      .buttonContainer button {
+        background-color: #6200ea;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .buttonContainer button:hover {
+        background-color: #3700b3;
+      }
+
+      .textBoxRow {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10px;
+      }
+
+      .textBoxRow input,
+      .textBoxRow textarea {
+        flex-grow: 1;
+        margin: 0 10px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .textBoxRow input:focus,
+      .textBoxRow textarea:focus {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        border-color: #6200ea;
+      }
+
+      textarea {
+        resize: none; /* prevent resizing by users */
+        overflow: hidden; /* hide scrollbars */
+        min-height: 40px;
+      }
+
+      .readOnly {
+        background-color: #ffffff !important; /* Keep background white */
+        border-color: #ddd !important;
+        cursor: not-allowed;
+      }
+
+      #textBoxContainer {
+        margin: 20px auto;
+        width: 80%;
+        max-width: 800px;
+      }
+
+      .buttonContainer button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Time Table Generator</h1>
+
+    <div class="buttonContainer">
+      <input
+        type="number"
+        id="numTextBoxes"
+        placeholder="Enter number of periods"
+      />
+      <button onclick="createTextBoxes()">Create Text Boxes</button>
+      <button onclick="toggleEditMode()">Toggle Edit Mode</button>
+    </div>
+
+    <div id="textBoxContainer"></div>
+
+    <script>
+      let isEditMode = true; // flag to track edit mode
+
+      function createTextBoxes() {
+        const numTextBoxes = document.getElementById("numTextBoxes").value;
+        const textBoxContainer = document.getElementById("textBoxContainer");
+        textBoxContainer.innerHTML = ""; // clear the container
+
+        const totalTextBoxes = numTextBoxes * 3; // create three times the number of text boxes
+        let textBoxRow = null;
+
+        for (let i = 0; i < totalTextBoxes; i++) {
+          if (i % 3 === 0) {
+            // create a new row every 3 text boxes
+            textBoxRow = document.createElement("div");
+            textBoxRow.className = "textBoxRow";
+            textBoxContainer.appendChild(textBoxRow);
+          }
+
+          if (i % 3 === 2) {
+            // Third text box (Notes) should be a textarea for long content
+            const textArea = document.createElement("textarea");
+            textArea.placeholder = "Notes";
+            textArea.oninput = function () {
+              autoResize(this);
+            };
+            textBoxRow.appendChild(textArea);
+          } else {
+            const textBox = document.createElement("input");
+            textBox.type = "text";
+
+            if (i % 3 === 0) {
+              // first text box in each row
+              textBox.placeholder = `Period ${Math.floor(i / 3) + 1}`;
+            } else if (i % 3 === 1) {
+              // second text box in each row
+              textBox.placeholder = "Timing";
+            }
+
+            textBoxRow.appendChild(textBox);
+          }
+        }
+
+        // Set initial mode to editable
+        setEditMode(true);
+      }
+
+      function toggleEditMode() {
+        isEditMode = !isEditMode;
+        setEditMode(isEditMode);
+      }
+
+      function setEditMode(isEditable) {
+        const textBoxes = document.querySelectorAll(
+          "#textBoxContainer input, #textBoxContainer textarea"
+        );
+
+        textBoxes.forEach((textBox) => {
+          if (isEditable) {
+            textBox.classList.remove("readOnly");
+            textBox.disabled = false; // enable editing
+          } else {
+            textBox.classList.add("readOnly");
+            textBox.disabled = true; // disable editing
+          }
+        });
+      }
+
+      // Function to auto-resize text area based on content
+      function autoResize(textArea) {
+        textArea.style.height = "auto"; // Reset the height
+        textArea.style.height = textArea.scrollHeight + "px"; // Set height based on scroll height
+      }
+
+      // Dynamically adjust the size of all text areas when edit mode is toggled
+      function adjustAllTextAreas() {
+        const textAreas = document.querySelectorAll(
+          "#textBoxContainer textarea"
+        );
+
+        textAreas.forEach((textArea) => {
+          autoResize(textArea);
+        });
+      }
+
+      // Trigger resizing of all text areas when entering edit mode
+      document
+        .querySelector("button[onclick='toggleEditMode()']")
+        .addEventListener("click", function () {
+          if (isEditMode) {
+            adjustAllTextAreas();
+          }
+        });
+    </script>
+  </body>
+</html>

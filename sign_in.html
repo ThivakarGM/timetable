@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url(../login_background.jpg) no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+        }
+
+        .signin-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .signin-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .signin-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .signin-container input[type="text"],
+        .signin-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .signin-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .signin-container button:hover {
+            background-color: #45a049;
+        }
+
+        .signin-container .signup-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .signin-container .signup-link a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .signin-container .signup-link a:hover {
+            text-decoration: underline;
+        }
+        .signin-container #signin{
+            text-decoration: none;
+            color: #fff;
+            background-color: #45a049;
+            padding: 5px;
+            width: 100px;
+            margin-left: 120px;
+    
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signin-container">
+        <h2>Sign In</h2>
+        <form action="#" method="post">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <a href="timetable.html" id="signin">Sign in</a>
+        </form>
+        <div class="signup-link">
+            <p>Don't have an account? <a href="sign_up.html" id="signup">Sign Up</a></p>
+        </div>
+    </div>
+<script>
+    function timetable() {
+            window.location.href = "timetable.html"; 
+        }
+</script>
+</body>
+</html>
